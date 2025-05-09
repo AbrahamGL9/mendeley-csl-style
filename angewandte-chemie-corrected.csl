@@ -1,27 +1,39 @@
 <bibliography entry-spacing="0" second-field-align="flush">
+    <sort>
+      <key variable="citation-number"/>
+    </sort>
     <layout suffix=".">
       <text variable="citation-number" prefix="[" suffix="]"/>
       <text macro="author" suffix=", "/>
 
       <choose>
-        <if type="bill book graphic legal_case legislation motion_picture report song" match="any">
+        <if type="article-journal article-magazine article-newspaper" match="any">
+          <text variable="title" quotes="true" suffix=" "/> <group delimiter=" ">
+            <text variable="container-title" form="short" font-style="italic"/> <group delimiter=", ">
+              <text macro="year-date"/> <text variable="volume" font-style="italic"/> <text variable="page" form="short"/> </group>
+          </group>
+          <text macro="access" prefix=", "/> </if>
+
+        <else-if type="book bill graphic legal_case legislation motion_picture report song" match="any">
           <group delimiter=", ">
-            <text variable="title" text-case="title" font-style="italic"/>
-            <text macro="publisher"/>
+            <text variable="title" text-case="title" font-style="italic"/> <text macro="editor" prefix="(Eds.: " suffix=")"/> <text macro="publisher"/>
             <text macro="year-date"/>
-            <text macro="pages" prefix=", "/> </group>
-        </if>
+            <text macro="pages" prefix=", "/>
+          </group>
+        </else-if>
+
         <else-if type="chapter paper-conference" match="any">
-          <text variable="title" quotes="true" suffix=" "/> <group delimiter=", " prefix=" "> <group delimiter=" ">
+          <text variable="title" quotes="true" suffix=" "/> <group delimiter=", " prefix=" ">
+            <group delimiter=" ">
               <text term="in" suffix=":"/>
-              <text variable="container-title" form="short" text-case="title" font-style="italic"/>
-              <text macro="editor" prefix="(Eds.: " suffix=")"/>
+              <text variable="container-title" form="short" text-case="title" font-style="italic"/> <text macro="editor" prefix="(Eds.: " suffix=")"/>
             </group>
             <text macro="publisher"/>
             <text macro="year-date"/>
             <text macro="pages" prefix=", "/>
           </group>
         </else-if>
+
         <else-if type="patent">
           <group delimiter=", ">
             <text variable="title" text-case="title" font-style="italic"/>
@@ -29,30 +41,33 @@
             <text variable="number"/>
           </group>
         </else-if>
+
         <else-if type="thesis">
           <group delimiter=", ">
             <text variable="title" text-case="title"/>
-            <text variable="genre"/>
-            <text variable="publisher"/>
-            <text macro="year-date"/>
+            <text variable="genre" suffix=","/> <text variable="publisher"/> <text macro="year-date"/>
           </group>
         </else-if>
+
         <else-if type="webpage">
           <group delimiter=", ">
             <text variable="title" quotes="true"/>
             <text macro="access"/>
-            <text macro="year-date"/>
-          </group>
-        </else-if>
-        <else> <text variable="title" quotes="true" suffix=" "/>
-          <group delimiter=" " prefix=""> <text variable="container-title" form="short" font-style="italic"/>
-            <group delimiter=", ">
-              <text macro="year-date"/>
-              <text variable="volume" font-style="italic"/>
-              <text variable="page" form="short"/>
+            <text variable="URL" prefix=" "/> <group prefix="(" suffix=")">
+              <text term="accessed" suffix=" "/>
+              <date variable="accessed">
+                <date-part name="day" suffix=" "/>
+                <date-part name="month" form="short" suffix=" "/>
+                <date-part name="year"/>
+              </date>
             </group>
-          </group>
-          <text macro="access" prefix=", "/>
+            <text macro="year-date"/> </group>
+        </else-if>
+
+        <else>
+          <text variable="title" suffix=". "/>
+          <text variable="container-title" font-style="italic" suffix=", "/>
+          <text macro="year-date"/>
         </else>
       </choose>
     </layout>
